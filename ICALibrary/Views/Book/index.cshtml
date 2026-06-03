@@ -1,0 +1,71 @@
+﻿@using DimainLayer.Enums
+@model List<ICALibrary.Models.ViewModel.BookIndexViewModel>
+
+@{
+    ViewData["Title"] = "لیست کتاب‌ها";
+}
+
+<div class="container mt-4" dir="rtl">
+    <h2>@ViewData["Title"]</h2>
+
+    <!-- دکمه گزارش -->
+    <div class="mb-3">
+        <a asp-action="CreateBook" class="btn btn-success"> افزودن کتاب جدید</a>
+        <a asp-action="PrintReportAllBooks" class="btn btn-primary">
+            <i class="bi bi-file-earmark-text"></i> گزارش از لیست کتاب ها
+        </a>
+    </div>
+
+    <!-- جدول کتاب‌ها -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>عنوان</th>
+                <th>نویسنده</th>
+                <th>دسته‌بندی</th>
+                <th>ISBN</th>
+                @* <th>بارکد</th> *@
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>
+                        @book.CategoryName
+                        </td>
+                    <td>@book.ISBN</td>
+                @*     <td>@book.Barcode</td> *@
+                    <td>
+                        @if (book.BookStatus == "Borrowed")
+                        {
+                            <span class="text-dark">امانت داده شده</span>
+                        }
+                        else if (book.BookStatus == "Available")
+                        {
+                            <span class="text-success">موجود </span>
+                        }
+                        else if (book.BookStatus == "Lost")
+                        {
+                            <span class="text-dark">گم شده</span>
+                        }
+                        else
+                        {
+                            <span>@book.BookStatus</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="BookDetails" asp-route-id="@book.Id" class="btn btn-info btn-sm">
+                            مشاهده
+                        </a>
+                        <a asp-action="EditBook" asp-route-id="@book.Id" class="btn btn-warning btn-sm">✏️ ویرایش</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

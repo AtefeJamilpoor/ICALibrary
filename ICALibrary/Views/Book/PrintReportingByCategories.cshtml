@@ -1,0 +1,8 @@
+﻿@using Stimulsoft.Report.Mvc;
+@Html.StiNetCoreViewer(new StiNetCoreViewerOptions()
+{
+    Actions ={
+        GetReport="PrintReportingByCategories",
+        ViewerEvent="ViewerEvent",
+    }
+})

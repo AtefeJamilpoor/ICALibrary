@@ -1,0 +1,54 @@
+﻿@using System.Globalization
+
+@model ICALibrary.Models.ViewModel.MembershipCardViewModel;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+<body dir="rtl">
+<div class="card shadow-lg" style="max-width:500px; margin:auto; border-radius:15px;">
+    <div class="card-header bg-primary text-white text-center" style="border-radius:15px 15px 0 0;">
+        <h4>کارت عضویت کتابخانه</h4>
+    </div>
+
+    <div class="card-body text-center">
+
+        <!-- عکس کاربر -->
+        <img src="@Url.Content(Model.PhotoUrl)" 
+        class="img-thumbnail mb-3" 
+        style="width:150px; height:150px; object-fit:cover; border-radius:10px;" />
+
+        <!-- نام و شماره عضویت -->
+        <h5 class="fw-bold">@Model.UserFullName</h5>
+        <p class="text-muted">شماره عضویت: @Model.MembershipNumber</p>
+
+        <hr />
+        <!-- اطلاعات کارت -->
+        <div class="row text-start">
+            <div class="col-6">
+                <p><strong>شماره کارت:</strong> @Model.CardNumber</p>
+                @{
+                    PersianCalendar pc = new PersianCalendar();
+                    var iDate = Model.IssueDate;
+                    string IssueDate = $"{pc.GetYear(iDate)}/{pc.GetMonth(iDate):00}/{pc.GetDayOfMonth(iDate):00}";
+                    string ExpiryDate;
+                    if (Model.ExpiryDate.HasValue)
+                    {
+                      var eDate = Model.ExpiryDate.Value;
+                       ExpiryDate = $"{pc.GetYear(eDate)}/{pc.GetMonth(eDate)}/{pc.GetDayOfMonth(eDate):00}";
+                    }
+                    else{
+                         ExpiryDate = "ندارد";
+                    }
+                }
+                <p><strong>تاریخ صدور:</strong>@IssueDate</p>
+            </div>
+            <div class="col-6">
+                <p><strong>تاریخ انقضا:</strong>@ExpiryDate</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

@@ -1,0 +1,11 @@
+﻿@using Stimulsoft.Report.Mvc;
+@model DateTime;
+@Html.StiNetCoreViewer(new StiNetCoreViewerOptions()
+{
+    Actions ={
+		GetReport="ReservationReport",
+        ViewerEvent="ViewerEvent",
+    },
+})
+
+

@@ -1,0 +1,127 @@
+﻿@model DateTime;
+<div class="container" dir="rtl">
+    <h2>کتاب‌های رزرو شده</h2>
+    <form method="post" asp-action="ShowReservationsDate" id="form">
+        <div class="mb-3">
+            <label id="select" class="form-label">تاریخ مورد نظر را انتخاب کنید</label>
+            <input id="Date" name="dateTime" class="form-control" />
+            <span id="danger" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success" @* onclick="ShowingReport()" *@>نمایش گزارش</button>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $("#Date").kendoDatePicker({ 
+                format: "yyyy/MM/dd",
+                culture: "fa-IR"
+            });
+        });
+
+        $("#form").submit(function(e) {
+            // 1. از پیشگیری از ارسال فرم جلوگیری می‌کنیم تا Ajax اجرا شود
+            e.preventDefault();
+
+            //var dateInput = $("#yourDateInput"); // فرض کنید آیدی این است
+
+                    var dateInput = document.getElementById("Date");
+                 var danger = document.getElementById("danger");
+
+          if (!dateInput || !dateInput.value || dateInput.value.trim() === "") {
+                 danger.innerHTML = "شما هیچ تاریخی را وارد نکردید";
+          }
+          else{
+                   $.ajax({
+                type: "POST",
+                url: "/Reservation/ShowReservationsDate",
+                data: { dateTime: dateInput.value },
+                dataType: "json",
+
+                success: function (response) {
+                    // 2. سرور با Status 200 OK پاسخ داده است
+
+                    if (response.success === true) {
+                              if (response.redirectUrl) {
+                        window.location.href = response.redirectUrl;
+                    } else {
+                        // fallback در صورت عدم وجود آدرس
+                        alert("عملیات موفق بود، اما آدرس ریدایرکت دریافت نشد.");
+                    }
+                    } 
+                    else {
+                        // 4. اگر سرور با 200 OK پاسخ داد، اما response.success === false بود
+                        // (مثلاً: "در این تاریخ هیچ رزروی نیست")
+
+                        // خطا را نمایش می‌دهیم و **اجازه نمی‌دهیم فرم سابمیت شود**
+                        danger.innerHTML = response.message;
+                        setTimeout(function () {
+                            danger.innerHTML = "";
+                        }, 3000);
+
+                        // چون e.preventDefault() در ابتدا اجرا شد، اینجا نیازی به تکرار نیست.
+                    }
+                },
+                error: function (xhr) {
+                    // 5. اگر سرور خطای 4xx یا 5xx داد (مثل همان 404 یا 500)
+                    alert("خطا در برقراری ارتباط با سرور: " + xhr.responseText);
+
+                    // اینجا هم نباید اجازه دهیم فرم سابمیت شود، و e.preventDefault() در بالا این کار را انجام داده است.
+                }
+            });
+          }
+        });
+
+      
+     //     function ShowingReport() {
+    //         var dateInput = document.getElementById("Date");
+    //         var danger = document.getElementById("danger");
+
+    //         // چک کردن اینکه آیا تاریخ وارد شده یا نه
+    //         if (!dateInput || !dateInput.value || dateInput.value.trim() === "") {
+    //             danger.innerHTML = "شما هیچ تاریخی را وارد نکردید";
+
+    //             // پیام 3 ثانیه نمایش داده می‌شود، سپس پاک می‌شود
+    //             setTimeout(function () {
+    //                 danger.innerHTML = "";
+    //             }, 3000);
+
+    //                 SUB (e);
+                       
+    //         } else {
+    //             // document.querySelector("form").submit();
+    //             $.ajax({
+    //         type: "POST",
+    //         url: "/Reservation/ShowReservationsDate",
+    //         data: { dateTime: dateInput.value },
+    //                    success: function (response) {
+    //             if (response.success) {
+    //                          window.location.href = res.redirectUrl; 
+    //             } else {
+    //                 // اگر هیچ کتابی وجود نداشت
+    //                 danger.innerHTML = response.message;
+    //                 setTimeout(function () {
+    //                     danger.innerHTML = "";
+    //                 }, 3000);
+    //             }
+    //         }
+    // ,
+    //         error: function (xhr) {
+    //              alert("خطا : " + xhr.responseText);
+    //         }
+    //     });
+    //         }
+    //     }
+            
+            // function SUB (e) {
+            //     e.preventDefault();  // ❌ جلوگیری از ارسال فرم
+            //   }
+             
+            //  $("form").on("submit",
+            // function (e) {
+            //     e.preventDefault();  // ❌ جلوگیری از ارسال فرم
+            //   }
+            //  );
+    </script>
+ }

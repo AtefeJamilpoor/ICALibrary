@@ -1,0 +1,23 @@
+﻿@model ServiceLayer.ViewModel.UserReservationsViewModel
+
+<div class="container" dir="rtl">
+    <h2>مدیریت رزرو و امانت کاربر</h2>
+
+    @if(!Model.hasAvalableCard) 
+    {
+        <b class="text-danger">کاربر به علت تمدید نکردن کارت عضویت امکان دریافت و رزرو هیچ کتابی را ندارد </b>
+    }
+    else if (Model.OverdueBooks.Count > 0)
+    {
+        <b class="text-danger">کاربر به علت دیرکرد امکان دریافت و رزرو هیچ کتابی را ندارد </b>
+    }
+    else{
+    @Html.Partial("_SearchBookPartial", Model.bookInfo)
+    }
+    <br />
+    @Html.Partial("_OverDueBooksPartial",Model.OverdueBooks)
+    <br />
+    @Html.Partial("_BorrowedBooksPartial", Model.BorrowedBooks)
+    <br />
+    @Html.Partial("_ReservedBooksPartial", Model.ReservedBooks)
+</div>

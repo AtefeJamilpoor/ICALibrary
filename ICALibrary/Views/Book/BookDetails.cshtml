@@ -1,0 +1,55 @@
+﻿@using System.Globalization
+@using DimainLayer.Enums
+
+@model DimainLayer.Model.Book
+
+
+@{
+    ViewBag.Title = "جزئیات کتاب";
+    Layout = "_Layout";
+ }
+
+<body dir="rtl">
+    <h2>جزئیات کتاب</h2>
+
+    <div class="card" style="max-width:600px; margin:auto;">
+        <div class="card-header bg-primary text-white">
+            اطلاعات کتاب
+        </div>
+        <div class="card-body text-center">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>عنوان کتاب:</strong> @Model.Title</p>
+                    <p><strong>نویسنده:</strong> @Model.Author</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>وضعیت کتاب:</strong>
+                        @if (Model.BookStatus == BookStatus.Borrowed)
+                        {
+                                <span>در حال امانت</span>
+                         }  
+                         else if(Model.BookStatus==BookStatus.Available){
+                             <span>موجود</span>
+                         }
+                         else if(Model.BookStatus==BookStatus.Lost){
+                             <span>گمشده</span>
+                         }
+                        else
+                        {
+                            <span>@Model.BookStatus</span>
+                        }
+                    </p>
+                    <p><strong>شماره کتاب (ISBN):</strong> @Model.ISBN</p>
+                </div>
+                <div class="col-md-12">
+                    <p><strong>بارکد:</strong> @Model.Barcode</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer text-center">
+            @Html.ActionLink("ویرایش", "EditBook", new { id = Model.Id }, new { @class = "btn btn-warning" }) |
+            @Html.ActionLink("بازگشت به لیست", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</body>

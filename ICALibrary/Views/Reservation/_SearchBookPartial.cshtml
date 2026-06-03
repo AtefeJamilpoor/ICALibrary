@@ -1,0 +1,16 @@
+﻿@model ServiceLayer.DTO.BookInfoPartial
+
+<div class="input-group mb-3">
+    <form asp-action="SearchByIsbn" method="post">
+        <input type="text" name="isbn" class="form-control" placeholder="ISBN کتاب را وارد کنید" />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <button type="submit" class="btn btn-primary">جستجو</button>
+    </form>
+</div>
+
+<div id="searchResult">
+    @if (Model != null)
+    {
+        @Html.Partial("_BookInfoPartial", Model)
+    }
+</div>

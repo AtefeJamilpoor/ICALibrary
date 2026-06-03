@@ -1,0 +1,46 @@
+﻿l@using System.Globalization
+@model IEnumerable<DimainLayer.Model.User>
+@{
+    ViewData["Title"] = "لیست کاربران";
+    Layout = "_Layout";
+}
+<body dir="rtl">
+
+<h2>لیست کاربران</h2>
+
+<div class="mb-3" dir="rtl">
+        <a asp-action="createuser" class="btn btn-success">➕ افزودن عضو جدید</a>
+        <a asp-action="PrintUserListReport" class="btn btn-info">📊 گزارش از لیست کاربران</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>نام کامل</th>
+            <th>کد ملی</th>
+            <th>شماره عضویت</th>
+            <th>ایمیل</th>
+            <th>شماره تلفن</th>
+            <th>تاریخ تولد</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.NationalCode.ToString()</td>
+                <td>@user.MembershipNumber</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                    <td>@user.BirthDate.Year/@user.BirthDate.Month/@user.BirthDate.Day</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary btn-sm">👁 مشاهده</a>
+                        <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning btn-sm">✏️ ویرایش</a>
+                    </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</body>

@@ -1,0 +1,99 @@
+﻿@using System.Globalization
+@model ICALibrary.Models.ViewModel.UserDetailsViewModel
+
+@{
+    ViewBag.Title = "جزئیات کاربر";
+    Layout = "_Layout";
+ }
+
+<body dir="rtl">
+    <h2>جزئیات کاربر</h2>
+
+    <div class="card" style="max-width:600px; margin:auto;">
+        <div class="card-header bg-primary text-white">
+            اطلاعات کاربر
+        </div>
+        <div class="card-body text-center">
+            <!-- نمایش عکس کاربر -->
+            @if (!string.IsNullOrEmpty(Model.User.PhotoUrl))
+            {
+                <img src="@Url.Content(Model.User.PhotoUrl)" alt="عکس کاربر" class="img-thumbnail mb-3" style="max-width:200px;" />
+            }
+            else
+            {
+                <img src="~/Content/Images/default-user.png" alt="عکس پیش‌فرض" class="img-thumbnail mb-3" style="max-width:200px;" />
+            }
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>نام کامل:</strong> @Model.User.FullName</p>
+                    <p><strong>کد ملی:</strong> @Model.User.NationalCode</p>
+                    <p><strong>شماره عضویت:</strong> @Model.User.MembershipNumber</p>
+                    <p><strong>ایمیل:</strong> @Model.User.Email</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>تلفن:</strong> @Model.User.PhoneNumber</p>
+                    <p><strong>تاریخ تولد:</strong> @Model.User.BirthDate.ToString("yyyy/MM/dd")</p>
+                    <p><strong>وضعیت عضویت:</strong>
+                        @if(Model.MembershipCard==null)
+                        {
+                            @Model.User.Status
+                        }
+                        else{
+                            @Model.MembershipCard.Status;
+                        }
+                    </p>
+                    <p>
+                        <strong>تاریخ عضویت:</strong>
+                        @{
+                            var pc = new PersianCalendar();
+                            var date = Model.User.MemberShipDate;
+                            string persianDate = $"{pc.GetYear(date)}/{pc.GetMonth(date):00}/{pc.GetDayOfMonth(date):00}";
+                        }
+                        @persianDate
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer text-center">
+            @Html.ActionLink("ویرایش", "EditUser", new { id = Model.User.Id }, new { @class = "btn btn-warning" }) |
+            @Html.ActionLink("بازگشت به لیست", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        @if (Model.MembershipCard == null)
+        {
+            <div class="alert alert-warning my-2">
+                کاربر زمانی می‌تواند کتابی را رزرو یا تحویل بگیرد که کارت عضویت برایش صادر شود
+            </div>
+
+            <a asp-controller="MembershipCard" asp-action="GenerateCard" asp-route-id="@Model.User.Id"
+            class="btn btn-outline-primary btn-lg mx-2">
+                <i class="bi bi-person-plus"></i> صدور کارت عضویت
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Reservation" asp-action="ReservationInfo" asp-route-id="@Model.User.Id"
+               class="btn btn-outline-success btn-lg mx-2">
+                <i class="bi bi-book"></i> رزرو و امانت
+            </a>
+
+            if (Model.MembershipCard.ExpiryDate > DateTime.Now)
+            {
+                <a asp-controller="MembershipCard" asp-action="ShowCard" asp-route-id="@Model.User.Id"
+                class="btn btn-outline-success btn-lg mx-2">
+                    <i class="bi bi-card-text"></i> نمایش کارت عضویت
+                </a>
+            }
+            else
+            {
+                <a asp-controller="MembershipCard" asp-action="RenewCard" asp-route-id="@Model.User.Id"
+                class="btn btn-outline-warning btn-lg mx-2">
+                    <i class="bi bi-arrow-repeat"></i> تمدید و نمایش کارت عضویت جدید
+                </a>
+            }
+        }
+    </div>
+</body>

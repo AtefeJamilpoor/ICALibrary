@@ -1,0 +1,63 @@
+﻿<h4>کتاب‌های رزرو شده</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>نام کتاب</th>
+            <th>نویسنده</th>
+            <th>تاریخ تحویل</th>
+            <th>تاریخ موعد</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Book.Title</td>
+                <td>@item.Book.Author</td>
+                <td>@item.accessDate</td>
+                <td>@item.returnDate</td>
+                <td>
+                    <form  method="post">
+                            <button type="button" onclick="Cancel(@item.Book.Id)" asp-action="CancelReservation" class="btn btn-warning">لغو رزرو</button>
+                        @if (item.accessDate>=DateTime.Now)
+                        {
+                            <button class="btn btn-success" onclick="ToMakeborrow('@item.Book.Id')">تحویل</button>
+                        }
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+         function ToMakeborrow(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Reservation/ReserveToBorrow",
+            data: { bookId: bookId },
+            success: function (response) {
+                // ریدایرکت به ReservationInfo
+                window.location.href = response.redirectUrl;
+            },
+            error: function (xhr) {
+                alert("خطا در ثبت امانت: " + xhr.responseText);
+            }
+        });
+    }
+
+         function Cancel(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Reservation/CancelReservation",
+            data: { bookId: bookId },
+            success: function (response) {
+                // ریدایرکت به ReservationInfo
+                window.location.href = response.redirectUrl;
+            },
+            error: function (xhr) {
+                alert("خطا در ثبت امانت: " + xhr.responseText);
+            }
+        });
+    }
+    </script>

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICALibrary", "ICALibrary\ICALibrary.csproj", "{15047F0B-14AD-4160-B170-D6A5E64768CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DimainLayer", "DimainLayer\DimainLayer.csproj", "{1D29320B-E5FF-4735-A36F-BE752116449C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{64B148F5-8E56-42F5-BC48-DFBA306CCDAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15047F0B-14AD-4160-B170-D6A5E64768CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15047F0B-14AD-4160-B170-D6A5E64768CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15047F0B-14AD-4160-B170-D6A5E64768CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15047F0B-14AD-4160-B170-D6A5E64768CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D29320B-E5FF-4735-A36F-BE752116449C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D29320B-E5FF-4735-A36F-BE752116449C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D29320B-E5FF-4735-A36F-BE752116449C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D29320B-E5FF-4735-A36F-BE752116449C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B148F5-8E56-42F5-BC48-DFBA306CCDAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B148F5-8E56-42F5-BC48-DFBA306CCDAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B148F5-8E56-42F5-BC48-DFBA306CCDAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B148F5-8E56-42F5-BC48-DFBA306CCDAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

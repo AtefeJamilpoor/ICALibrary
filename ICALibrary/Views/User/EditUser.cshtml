@@ -1,0 +1,85 @@
+﻿@model ServiceLayer.DTO.EditUserDTO
+
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+}
+
+<div class="container mt-4" dir="rtl">
+    <h2 class="mb-4">ویرایش اطلاعات کاربر</h2>
+
+    <form asp-action="EditUser" asp-controller="User" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        @Html.AntiForgeryToken()
+      <input type="hidden" asp-for="Id" />
+
+        <!-- FullName -->
+        <div class="mb-3">
+            <label class="form-label">نام و نام خانوادگی</label>
+            <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+
+        <!-- PhoneNumber -->
+        <div class="mb-3">
+            <label class="form-label">شماره تلفن</label>
+            <input asp-for="PhoneNumber" class="form-control" dir="rtl" style="margin-right:1px;" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label class="form-label">ایمیل</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- BirthDate with Kendo DatePicker -->
+        <div class="mb-3">
+            <label class="form-label">تاریخ تولد</label>
+            <input asp-for="BirthDate" id="BirthDate" class="form-control" />
+            <span asp-validation-for="BirthDate" class="text-danger"></span>
+        </div>
+
+        <!-- Status with Kendo DropDownList -->
+       @*  <div class="mb-3">
+            <label class="form-label">وضعیت</label>
+            <select asp-for="Status" id="Status" class="form-select"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div> *@
+
+        <!-- Image Upload -->
+        <div class="mb-3">
+            <label asp-for="Image" class="form-label"></label>
+            <input type="file" asp-for="Image" class="form-control" accept="image/*" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+        <a asp-action="Index" asp-controller="User" class="btn btn-secondary">بازگشت</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Kendo UI Scripts -->
+    <script>
+        $(document).ready(function () {
+            // Kendo DatePicker برای تاریخ تولد
+            $("#BirthDate").kendoDatePicker({
+                format: "yyyy/MM/dd",
+                culture: "fa-IR"
+            });
+
+            // Kendo DropDownList برای وضعیت کاربر
+            $("#Status").kendoDropDownList({
+                dataTextField: "text",
+                dataValueField: "value",
+                dataSource: [
+                    { text: "فعال", value: "Active" },
+                    { text: "مسدود", value: "Blocked" }
+                ],
+                // optionLabel: { text: "فعال", value: "Active" }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿
+<h4>کتاب‌های امانت گرفته شده</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>نام کتاب</th>
+            <th>نویسنده</th>
+            <th>تاریخ تحویل</th>
+            <th>تاریخ موعد</th>       
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Book.Title</td>
+                <td>@item.Book.Author</td>
+                <td>@item.accessDate</td>
+                <td>@item.returnDate</td>
+                <td>
+                    <form method="post">
+                        <button type="button" onclick="ReturnBook(@item.Book.Id)" asp-action="ReturnBook" class="btn btn-danger">پس گرفتن</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+         function ReturnBook(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Reservation/ReturnBook",
+            data: { bookId: bookId },
+            success: function (response) {
+                // ریدایرکت به ReservationInfo
+                window.location.href = response.redirectUrl;
+            },
+            error: function (xhr) {
+                alert("خطا در ثبت امانت: " + xhr.responseText);
+            }
+        });
+    }
+</script>

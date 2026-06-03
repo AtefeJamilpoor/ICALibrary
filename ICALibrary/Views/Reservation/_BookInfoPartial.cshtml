@@ -1,0 +1,103 @@
+﻿@using System.Globalization
+<div class="card">
+    <div class="card-body">
+        <h5>@Model.Book.Title</h5>
+        <p>نویسنده: @Model.Book.Author</p>
+        <p>ISBN: @Model.Book.ISBN</p>
+
+        @{
+            PersianCalendar pc = new PersianCalendar();
+        }
+
+        @if (Model.HasLate)
+        {
+            <span class="text-danger"> به علت تاخیر کتاب موجود نیست و امکان امانت و رزرو ندارد</span>
+        }
+        else
+
+        {
+            if (!Model.IsBorrowed)
+            {
+                if (!Model.IsReserver)
+                {
+                    <button class="btn btn-success" onclick="borrowBook('@Model.Book.Id')">تحویل</button>
+
+                }
+                else{
+                    <span class="text-danger">به علت رزرو امکان تحویل و رزرو دوباره کتاب وجود ندارد</span>
+                    DateTime rDate = Model.returnDate.AddDays(4);
+
+                    int returnYear = pc.GetYear(rDate);
+                    int returnMonth = pc.GetMonth(rDate);
+                    int returnDay = pc.GetDayOfMonth(rDate);
+
+                    string persianDate = $"{returnYear}/{returnMonth}/{returnDay}";
+
+                    <span class="text-danger">تا تاریخ <span>@persianDate</span> درصورتیکه رزرو کننده کتاب را تحویل نگیرد می توانید برای تحویل گرفتن آن اقدام کنید </span>
+                }
+
+            }
+            else
+            {
+                DateTime rDate = Model.returnDate.AddDays(1);
+                int returnYear = pc.GetYear(rDate);
+                int returnMonth = pc.GetMonth(rDate);
+                int returnDay = pc.GetDayOfMonth(rDate);
+
+                DateTime expiDate = Model.returnDate.AddDays(4);
+
+                int expiYear = pc.GetYear(expiDate);
+                int expiMonth = pc.GetMonth(expiDate);
+                int expiDay = pc.GetDayOfMonth(expiDate);
+
+                string persianRdate = $"{returnYear}/{returnMonth}/{returnDay}";
+                string persianEdate = $"{expiYear}/{expiMonth}/{expiDay}";
+
+                    if (!Model.IsReserver)
+                    {
+                    <span class="text-danger">درحال حاضر این کتاب در اختیار شخص دیگری است. شما می‌توانید این کتاب را رزرو کنید تا پس از برگرداندن کتاب از تاریخ <span>@persianRdate</span> تا تاریخ<span>@persianEdate</span>کتاب برای شما رزرو بماند تا آن را تحویل بگیرید</span>
+                        <br />
+                        <button class="btn btn-warning" onclick="reserveBook(@Model.Book.Id)">رزرو</button>
+                    }
+                    else
+                    {
+                        <span class="text-danger">.کتاب امانت داده شده و شخص دیگری هم آن را رزرو کرده است</span>
+                    <span class="text-danger">تا تاریخ <span>@persianEdate</span> درصورتیکه رزرو کننده کتاب را تحویل نگیرد می توانید برای تحویل گرفتن آن اقدام کنید </span>
+                    }
+                
+            }
+         }
+    </div>
+</div>
+
+<script>
+         function borrowBook(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Reservation/Borrow",
+            data: { bookId: bookId },
+            success: function (response) {
+                // ریدایرکت به ReservationInfo
+                window.location.href = response.redirectUrl;
+            },
+            error: function (xhr) {
+                alert("خطا در ثبت امانت: " + xhr.responseText);
+            }
+        });
+    }
+
+     function reserveBook(bookId) {
+        $.ajax({
+            type: "POST",
+            url: "/Reservation/Reserve",
+            data: { bookId: bookId },
+            success: function (response) {
+                // ریدایرکت به ReservationInfo
+                window.location.href = response.redirectUrl;
+            },
+            error: function (xhr) {
+                alert("خطا در ثبت رزرو: " + xhr.responseText);
+            }
+        });
+    }
+    </script>
